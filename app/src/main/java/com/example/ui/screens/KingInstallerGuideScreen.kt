@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -169,6 +170,76 @@ fun KingInstallerGuideScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "เปิดการตั้งค่า Android Auto บนมือถือทันที",
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
+        // CRITICAL IN-CAR ERROR FIX CARD: "โหลดรายการที่คุณเลือกไม่ได้"
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("troubleshoot_load_error_card"),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = AutoAmber.copy(alpha = 0.12f)),
+            border = androidx.compose.foundation.BorderStroke(1.5.dp, AutoAmber)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = AutoAmber,
+                        modifier = Modifier.size(26.dp)
+                    )
+                    Text(
+                        text = "แก้ปัญหาจอรถขึ้น \"โหลดรายการที่คุณเลือกไม่ได้\"",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = AutoAmber
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "หากหน้าจอวิทยุรถยนต์แสดงข้อความ 'โหลดรายการที่คุณเลือกไม่ได้' ให้ตรวจสอบและทำตามดังนี้:\n\n" +
+                            "1. ในเวอร์ชันใหม่นี้ ระบบ Media Service ได้รับการปรับปรุงแล้ว เมื่อแตะ AutoBrowser บนจอรถ ระบบจะมีเมนูให้เลือกทันที:\n" +
+                            "   • 🎬 เปิด YouTube (1080p 60fps)\n" +
+                            "   • 🌐 เว็บเบราว์เซอร์ (Google Web)\n" +
+                            "   • 🗺️ แผนที่ Google Maps สด\n" +
+                            "   • 🎵 Spotify Web Music\n" +
+                            "   • ⚡ รีเฟรชการแสดงผลจอรถยนต์\n\n" +
+                            "2. ให้แตะเลือกที่ '🎬 เปิด YouTube' หรือ '🌐 เว็บเบราว์เซอร์' ได้ทันที\n\n" +
+                            "3. เปิดสิทธิ์ 'ปรากฏทับแอปอื่น' (Display Over Other Apps): สำหรับส่งหน้าต่างภาพขึ้นจอรถยนต์โดยไม่ถูกระบบ Android บล็อก",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        lineHeight = 22.sp
+                    )
+                )
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        openOverlayPermissionSettings(context)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AutoAmber,
+                        contentColor = Color.Black
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth().testTag("open_overlay_permission_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Security,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "เปิดสิทธิ์ 'ปรากฏทับแอปอื่น' (Display Over Other Apps)",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -417,6 +488,27 @@ fun openAndroidAutoSettings(context: Context) {
             Toast.makeText(context, "กรุณาเลื่อนหาเมนู Android Auto ในการตั้งค่า", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             Toast.makeText(context, "ไม่สามารถเปิดการตั้งค่าได้โดยตรง: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+fun openOverlayPermissionSettings(context: Context) {
+    try {
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:${context.packageName}")
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(intent)
+    } catch (_: Exception) {
+        try {
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "ไม่สามารถเปิดการตั้งค่าสิทธิ์ได้: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
         }
     }
 }

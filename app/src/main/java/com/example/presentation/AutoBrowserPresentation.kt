@@ -5,6 +5,7 @@ import android.app.Presentation
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Display
 import android.view.View
@@ -56,10 +57,19 @@ class AutoBrowserPresentation(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Keep car display alive and hardware accelerated
+        // Keep car display alive and hardware accelerated with overlay capability if running from Service
         window?.apply {
+            if (context !is android.app.Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+                } else {
+                    @Suppress("DEPRECATION")
+                    setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
+                }
+            }
             addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED)
             addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
             setBackgroundDrawableResource(android.R.color.black)
         }
 
