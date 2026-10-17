@@ -1,0 +1,8 @@
+{
+  "name": "AutoBrowser",
+  "description": "High-resolution web browser optimized for Android Auto with in-car head unit simulator, ergonomic bottom toolbar, quick bookmarks, video playback, and fast form autofill.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
