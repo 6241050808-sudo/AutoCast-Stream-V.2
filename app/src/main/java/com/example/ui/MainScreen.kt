@@ -4,7 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -87,13 +89,54 @@ fun MainScreen(
         }
     }
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val hasOverlayPermission = androidx.compose.runtime.remember(uiState) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            android.provider.Settings.canDrawOverlays(context)
+        } else true
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             // Note: The main browser toolbar has been moved to the bottom for driver reachability!
-            // When an external Android Auto car display is connected, a sleek floating indicator is displayed.
-            if (uiState.isCarDisplayActive && !uiState.isFullScreenMode) {
+            // When overlay permission is missing, guide the driver with a 1-tap banner
+            if (!hasOverlayPermission && !uiState.isFullScreenMode) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickable {
+                            com.example.ui.screens.openOverlayPermissionSettings(context)
+                        },
+                    color = AutoAmber.copy(alpha = 0.95f),
+                    tonalElevation = 6.dp
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.DirectionsCar,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = "เปิดสิทธิ์ 'ปรากฏทับแอปอื่น' เพื่อให้ภาพแสดงบนหน้าจอรถยนต์ (แตะที่นี่)",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 11.sp
+                            )
+                        )
+                    }
+                }
+            } else if (uiState.isCarDisplayActive && !uiState.isFullScreenMode) {
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -101,7 +144,7 @@ fun MainScreen(
                         .padding(horizontal = 16.dp, vertical = 6.dp)
                         .clip(RoundedCornerShape(20.dp)),
                     color = Color(0xFF0F172A).copy(alpha = 0.95f),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, AutoGreen),
+                    border = BorderStroke(1.dp, AutoGreen),
                     tonalElevation = 6.dp
                 ) {
                     Row(
@@ -322,7 +365,7 @@ fun MainScreen(
                                 .padding(8.dp)
                                 .clip(RoundedCornerShape(20.dp)),
                             color = Color(0xFF0F172A).copy(alpha = 0.92f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, AutoGreen),
+                            border = BorderStroke(1.dp, AutoGreen),
                             tonalElevation = 6.dp
                         ) {
                             Row(

@@ -109,6 +109,130 @@ fun KingInstallerGuideScreen(
             }
         }
 
+        // USER HELP CENTER: ทำไมไม่ขึ้นหน้าบราวเซอร์หรือยูทูป & ต้องใช้ไฟล์อะไรบ้าง
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("user_faq_troubleshoot_card"),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+            border = androidx.compose.foundation.BorderStroke(2.dp, AutoAmber)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(AutoAmber.copy(alpha = 0.25f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = null,
+                            tint = AutoAmber,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = "ตอบคำถาม: ทำไมไม่ขึ้นจอรถ & ต้องใช้ไฟล์อะไรบ้าง?",
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = AutoAmber
+                            )
+                        )
+                        Text(
+                            text = "คำแนะนำตรงจุดสำหรับแก้ปัญหาหน้าจอมืดหรือไม่ขึ้นแอพ",
+                            style = MaterialTheme.typography.bodySmall.copy(color = Color(0xFF94A3B8))
+                        )
+                    }
+                }
+
+                // Question 1: ต้องใช้ไฟล์อะไรบ้าง?
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(
+                            text = "📁 1. ไฟล์ที่ต้องใช้ (ต้องใช้ไฟล์อะไรเพิ่มหรือไม่?):",
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = AutoCyan
+                            )
+                        )
+                        Text(
+                            text = "• คำตอบ: ไม่ต้องใช้ไฟล์ภายนอกเพิ่มเติมเลยครับ! ตัวระบบ AutoBrowser ได้รวบรวมเอนจินฉายภาพ CarPresentation, MediaBrowserService และระบบแสดงผล YouTube 1080p บรรจุครบถ้วนในไฟล์ APK แล้ว\n" +
+                                    "• ตัวอย่างไฟล์ที่คุณส่งมา ได้รับการนำมาตรวจสอบโค้ดและปรับโครงสร้างทั้งหมดให้รองรับระบบรถยนต์เรียบร้อยแล้ว",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Color(0xFFE2E8F0),
+                                lineHeight = 20.sp
+                            )
+                        )
+                    }
+                }
+
+                // Question 2: ทำไมถึงไม่ขึ้นหน้าบราวเซอร์หรือยูทูป?
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(
+                            text = "🚗 2. ทำไมถึงไม่ขึ้นหน้าบราวเซอร์หรือ YouTube บนจอรถ?:",
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = AutoAmber
+                            )
+                        )
+                        Text(
+                            text = "สาเหตุหลักเกิดจากนโยบายความปลอดภัยของ Google Android Auto ที่ปิดกั้นแอปวิดีโอและบราวเซอร์:\n" +
+                                    "1) บนมือถือยังไม่ได้เปิด 'แหล่งที่ไม่รู้จัก (Unknown sources)': Google จะซ่อนแอปทันทีหากไม่ได้ติดตั้งจาก Play Store\n" +
+                                    "2) ยังไม่ได้กดติ๊กถูกใน 'ปรับแต่งตัวเปิดใช้งาน (Customize Launcher)': ต้องเข้าไปติ๊กเปิดชื่อ AutoBrowser ให้ขึ้นจอรถ\n" +
+                                    "3) ยังไม่ได้เปิดสิทธิ์ 'ปรากฏทับแอปอื่น (Display Over Other Apps)': ระบบต้องการสิทธิ์นี้เพื่อฉายภาพเบราว์เซอร์และ YouTube ขึ้นจอวิทยุรถยนต์",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Color(0xFFE2E8F0),
+                                lineHeight = 20.sp
+                            )
+                        )
+                    }
+                }
+
+                // Action Buttons for instant fix
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = { openAndroidAutoSettings(context) },
+                        modifier = Modifier.weight(1f).testTag("quick_fix_aa_settings_btn"),
+                        colors = ButtonDefaults.buttonColors(containerColor = AutoCyan, contentColor = Color(0xFF00363D)),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("เปิดตั้งค่า Android Auto", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(
+                        onClick = { openOverlayPermissionSettings(context) },
+                        modifier = Modifier.weight(1f).testTag("quick_fix_overlay_btn"),
+                        colors = ButtonDefaults.buttonColors(containerColor = AutoAmber, contentColor = Color.Black),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("เปิดสิทธิ์ทับแอปอื่น", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+
         // CRITICAL CUSTOMIZE LAUNCHER CARD
         Card(
             modifier = Modifier

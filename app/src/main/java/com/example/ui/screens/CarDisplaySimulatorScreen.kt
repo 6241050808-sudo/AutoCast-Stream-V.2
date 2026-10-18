@@ -853,7 +853,7 @@ fun CarDisplaySimulatorScreen(
                     CarWebShortcutChip(
                         label = "YouTube",
                         icon = Icons.Default.PlayArrow,
-                        onClick = { viewModel.navigateToUrl("https://www.youtube.com") },
+                        onClick = { viewModel.navigateToUrl("https://m.youtube.com") },
                         modifier = Modifier.weight(1f)
                     )
                     CarWebShortcutChip(

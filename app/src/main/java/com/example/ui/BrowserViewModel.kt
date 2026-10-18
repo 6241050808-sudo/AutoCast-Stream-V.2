@@ -26,7 +26,7 @@ enum class BrowserTab {
 }
 
 data class BrowserUiState(
-    val currentUrl: String = "https://www.youtube.com",
+    val currentUrl: String = "https://m.youtube.com",
     val pageTitle: String = "AutoBrowser",
     val loadingProgress: Int = 0,
     val isLoading: Boolean = false,

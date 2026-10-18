@@ -22,6 +22,9 @@ import android.widget.FrameLayout
 private const val DESKTOP_USER_AGENT =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 
+private const val MOBILE_USER_AGENT =
+    "Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36"
+
 /**
  * Custom Presentation that directly renders on the Android Auto car display (Secondary / Virtual Display).
  * This eliminates the dependency on third-party mirroring tools like Fermata Auto.
@@ -40,7 +43,7 @@ class AutoBrowserPresentation(
         set(value) {
             field = value
             webView?.let { wv ->
-                wv.settings.userAgentString = if (value) DESKTOP_USER_AGENT else null
+                wv.settings.userAgentString = if (value) DESKTOP_USER_AGENT else MOBILE_USER_AGENT
                 wv.reload()
             }
         }
@@ -181,7 +184,7 @@ class AutoBrowserPresentation(
 
         webView = wv
         rootLayout?.addView(wv)
-        wv.loadUrl("https://www.youtube.com")
+        wv.loadUrl("https://m.youtube.com")
     }
 
     fun loadUrl(url: String) {

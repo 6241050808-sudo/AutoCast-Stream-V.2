@@ -146,7 +146,7 @@ class AutoBrowserMediaBrowserService : MediaBrowserService() {
         currentMediaId = mediaId
         val (url, title, subtitle) = when (mediaId) {
             MEDIA_ID_YOUTUBE -> Triple(
-                "https://www.youtube.com",
+                "https://m.youtube.com",
                 "🎬 YouTube 1080p 60fps",
                 "กำลังแสดงผลวิดีโอบนหน้าจอ Android Auto"
             )
@@ -172,7 +172,7 @@ class AutoBrowserMediaBrowserService : MediaBrowserService() {
                     AutoBrowserPresentationService.startService(applicationContext)
                 } catch (_: Exception) {}
                 Triple(
-                    "https://www.youtube.com",
+                    "https://m.youtube.com",
                     "⚡ รีสตาร์ทระบบฉายภาพเรียบร้อย",
                     "ระบบพร้อมแสดงผลบนจอรถยนต์แล้ว"
                 )

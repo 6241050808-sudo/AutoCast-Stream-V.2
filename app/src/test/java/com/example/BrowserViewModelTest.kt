@@ -22,7 +22,7 @@ class BrowserViewModelTest {
         val viewModel = BrowserViewModel(application)
 
         assertNotNull(viewModel.uiState.value)
-        assertEquals("https://www.youtube.com", viewModel.uiState.value.currentUrl)
+        assertEquals("https://m.youtube.com", viewModel.uiState.value.currentUrl)
         assertEquals(BrowserTab.BROWSER, viewModel.uiState.value.activeTab)
         assertFalse(viewModel.uiState.value.isCarDisplayActive)
         assertEquals(125, viewModel.uiState.value.zoomScalePercent)
